@@ -1,5 +1,6 @@
 
 # 题目
+[题目链接]<https://www.acwing.com/problem/content/91/>
 > 
 求a的b次方对p取模的值。
 
