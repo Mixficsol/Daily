@@ -78,62 +78,63 @@ const int maxn = 1e6 + 10;
 using namespace std;
 
 struct task {
-	string name; // 课程名字
-	int cost; // 课程作业写完需要的时间
-	int dead; // 该课程还有几天需要交
+  string name; // 课程名字
+  int cost; // 课程作业写完需要的时间
+  int dead; // 该课程还有几天需要交
 } work[20];
 
 struct property {
-	int father; // 父节点
-	int course; //记录课程名字
-	int score;  // 记录已经扣掉的分数
-	int time;   // 做完作业需要的时间
+  int father; // 父节点
+  int course; //记录课程名字
+  int score;  // 记录已经扣掉的分数
+  int time;   // 做完作业需要的时间
 } dp[1 << 15]; //该状态下完成的任务扣分的最优解
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	int t, n;
-	cin >> t;
-	while (t--) {
-		cin >> n;
-		format(dp);
-		for (int i = 0; i < n; i++) {
-			cin >> work[i].name >> work[i].dead >> work[i].cost; //记录各个属性值
-		}
-		int end = 1 << n;
-		for (int i = 1; i < end; i++) { // 这里枚举所有的情况从什么都没做的00000到都做了的11111
-			dp[i].score = INF; // 初始化dp为最大值因为题目要求最小值
-			for (int j = n - 1; j >= 0; j--) { // 这里因为题目的输入是由字典序逐渐增大来给的，所以要以最小字典序输出得从最左边(最后一门课）开始遍历1000，这里的1就是最后一门课，0001这里
-				int temp = 1 << j;             // 的1就是第一节课
-				if (temp & i) { // 确认前面的状态是什么，假如这里的i的二进制表示是1011，那么做完括号中的运算后他的值可能是1010，1001, 0011，这三种情况
-					int rec = i - temp; // 这里的减法就是把回到前一个状态，例如i是1011，temp是0010，那么减完就是1001，回到上面三种情况中的一种
-					int res = dp[rec].time + work[j].cost - work[j].dead; // res代表要扣的分数=之前写完作业已经用掉的天数 + 当前这个作业需要用的天数 - 当前这个作业需要的截止时间
-					if (res < 0) {
-						res = 0;  // 这种出现在截止时间特别长时，例如之前写作业用掉一天，当前作业需要2天，这个作业需要的截止时间是第100天，那么此时我们认为是不扣分的因为做完这个作业才第三天
-					}
-					if (res + dp[rec].score < dp[i].score) { // 如果出现了最优的扣分情况就赋值给当前状态下的dp
-						dp[i].score = res + dp[rec].score; // 最优扣分 = 之前的扣分 + 这次要扣的分数
-						dp[i].father = rec; // 当前作业的子节点就是之前作业的状态，例如当前最优状态是1011，是由1001这个状态得来的，那么1001就是1011的父节点
-						dp[i].course = j;  // 记录当前写的科目作业名字
-						dp[i].time = dp[rec].time + work[j].cost; // 计算写完这个作业已经用掉了多少天 = 之前作业需要的时间 + 当前作业需要的时间
-					}
-				}
-			}
-		}
-		cout << dp[end - 1].score << endl; // 计算出总共扣的分数（end- 1)这个二进制就1111111，代表所有的作业都完成了
-		stack<int> q; 
-		int x = end - 1;
-		while (dp[x].time) { // 从最后完成的作业开始往前找父节点
-			q.push(dp[x].course); // 将最后完成的存入栈中，栈最上面的是最先完成的
-			x = dp[x].father;
-		}
-		while (!q.empty()) {
-			int y = q.top();
-			cout << work[y].name << endl; // 依次打印出栈
-			q.pop();
-		}
-	}
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int t, n;
+  cin >> t;
+  while (t--) {
+    cin >> n;
+    format(dp);
+    for (int i = 0; i < n; i++) {
+      cin >> work[i].name >> work[i].dead >> work[i].cost; //记录各个属性值
+    }
+    int end = 1 << n;
+    for (int i = 1; i < end; i++) { // 这里枚举所有的情况从什么都没做的00000到都做了的11111
+      dp[i].score = INF; // 初始化dp为最大值因为题目要求最小值
+      for (int j = n - 1; j >= 0; j--) { // 这里因为题目的输入是由字典序逐渐增大来给的，所以要以最小字典序输出得从最左边(最后一门课）开始遍历1000，这里的1就是最后一门课，0001这里
+        int temp = 1 << j;             // 的1就是第一节课
+	if (temp & i) { // 确认前面的状态是什么，假如这里的i的二进制表示是1011，那么做完括号中的运算后他的值可能是1010，1001, 0011，这三种情况
+	  int rec = i - temp; // 这里的减法就是把回到前一个状态，例如i是1011，temp是0010，那么减完就是1001，回到上面三种情况中的一种
+	  int res = dp[rec].time + work[j].cost - work[j].dead; // res代表要扣的分数=之前写完作业已经用掉的天数 + 当前这个作业需要用的天数 - 当前这个作业需要的截止时间
+	  if (res < 0) {
+	    res = 0;  // 这种出现在截止时间特别长时，例如之前写作业用掉一天，当前作业需要2天，这个作业需要的截止时间是第100天，那么此时我们认为是不扣分的因为做完这个作业才第三天
+	  }
+	  if (res + dp[rec].score < dp[i].score) { // 如果出现了最优的扣分情况就赋值给当前状态下的dp
+	    dp[i].score = res + dp[rec].score; // 最优扣分 = 之前的扣分 + 这次要扣的分数
+	    dp[i].father = rec; // 当前作业的子节点就是之前作业的状态，例如当前最优状态是1011，是由1001这个状态得来的，那么1001就是1011的父节点
+	    dp[i].course = j;  // 记录当前写的科目作业名字
+	    dp[i].time = dp[rec].time + work[j].cost; // 计算写完这个作业已经用掉了多少天 = 之前作业需要的时间 + 当前作业需要的时间
+         }
+       }
+     }
+   }
+   cout << dp[end - 1].score << endl; // 计算出总共扣的分数（end- 1)这个二进制就1111111，代表所有的作业都完成了
+   stack<int> q; 
+   int x = end - 1;
+   while (dp[x].time) { // 从最后完成的作业开始往前找父节点
+     q.push(dp[x].course); // 将最后完成的存入栈中，栈最上面的是最先完成的
+     x = dp[x].father;
+   }
+   while (!q.empty()) {
+     int y = q.top();
+     cout << work[y].name << endl; // 依次打印出栈
+     q.pop();
+   }
+  }
+  return 0;
 }
 
 
