@@ -59,47 +59,29 @@ using namespace std;
 int used[21];
 int n;
 
-inline int read() {
-	int s = 0, w = 1;
-	char ch = getchar();
-	while (ch < '0' || ch > '9') {
-		if (ch == '-') {
-			w = -1;
-		}
-		ch = getchar();
-	}
-	while (ch >= '0' && ch <= '9') {
-		s = s * 10 + ch - '0';
-		ch = getchar();
-	}
-	return s * w;
-}
-
 void dfs(int u) {
-	if (u > n) {
-		for (int i = 1; i <= n; i++) {
-			if (used[i] == 1) {
-				cout << i << ' ';
-			}
-		}
-		cout << endl;
-		return;
-	}
-	used[u] = 1;
-	dfs(u + 1);
-	used[u] = 0;
-	
-	used[u] = 2;
-	dfs(u + 1);
-	used[u] = 0;
+  if (u > n) {
+    for (int i = 1; i <= n; i++) {
+      if (used[i] == 1) {
+        cout << i << ' ';
+      }
+    }
+    cout << endl;
+    return;
+  }
+  used[u] = 1;
+  dfs(u + 1);
+  used[u] = 0;	
+  used[u] = 2;
+  dfs(u + 1);
+  used[u] = 0;
 }
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cin >> n;
-	dfs(1);
-	return 0;
-	
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cin >> n;
+  dfs(1);
+  return 0;	
 }
-```
+
