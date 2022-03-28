@@ -51,19 +51,19 @@ using namespace std;
 
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	ll a, b, c, p;
-	cin >> a >> b >> p;
-	c = 1;
-	while (b) {
-		if (b & 1) {
-			c = c * a % p;
-		}
-		a = a * a % p;
-		b >>= 1;
-	}
-	cout << c % p << endl;
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  ll a, b, c, p;
+  cin >> a >> b >> p;
+  c = 1;
+  while (b) {
+    if (b & 1) {
+      c = c * a % p;
+    }
+    a = a * a % p;
+    b >>= 1;
+  }
+  cout << c % p << endl;
+  return 0;
 }
-```
+
