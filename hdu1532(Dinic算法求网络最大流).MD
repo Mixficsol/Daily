@@ -36,64 +36,65 @@ queue<int> q;
 
 
 int bfs() {  // 用来构造Level图，即第几层
-	while (!q.empty()) {
-		q.pop();
+  while (!q.empty()) {
+    q.pop();
+  }
+  format(dis);
+  dis[1] = 1;
+  q.push(1);
+  while (!q.empty()) {
+    int t = q.front();
+    q.pop();
+    for (int i = 1; i <= m; i++) {
+      if (map1[t][i] && !dis[i]) {
+        q.push(i);
+	dis[i] = dis[t] + 1;
+	if (i == m) {
+	  return 1;
 	}
-	format(dis);
-	dis[1] = 1;
-	q.push(1);
-	while (!q.empty()) {
-		int t = q.front();
-		q.pop();
-		for (int i = 1; i <= m; i++) {
-			if (map1[t][i] && !dis[i]) {
-				q.push(i);
-				dis[i] = dis[t] + 1;
-				if (i == m) {
-					return 1;
-				}
-			}
-		}
-	}
-	return 0;
+      }
+    }
+  }
+  return 0;
 }
 
 int dfs(int v, int cap) { //v是当前的点，cap是容量
-	if (v == m) {
-		return cap;
-	}
-	int tp = cap; // tp是空闲量
-	for (int i = 1; i <= m && tp; i++) {
-		if (map1[v][i] && dis[i] == dis[v] + 1) {
-			int t = dfs(i, min(tp, map1[v][i]));
-			map1[v][i] -= t;
-			map1[i][v] += t; // 反向边的建立
-			tp -= t;
-		}
- 	}
-    return cap - tp; //容量-空闲量即就是流量
+  if (v == m) {
+    return cap;
+  }
+  int tp = cap; // tp是空闲量
+  for (int i = 1; i <= m && tp; i++) {
+    if (map1[v][i] && dis[i] == dis[v] + 1) {
+      int t = dfs(i, min(tp, map1[v][i]));
+      map1[v][i] -= t;
+      map1[i][v] += t; // 反向边的建立
+      tp -= t;
+    }
+  }
+  return cap - tp; //容量-空闲量即就是流量
 }
 
 
 
 void Dinic() {
-	int flow = 0;
-	while (bfs()) {
-		flow += dfs(1, INF);
-	}
-	cout << flow << endl;
+  int flow = 0;
+  while (bfs()) {
+    flow += dfs(1, INF);
+  }
+  cout << flow << endl;
 }
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	int x, y, z;
-	while (cin >> n >> m) {
-		format(map1);
-		for (int i = 0; i < n; i++) {
-			cin >> x >> y >> z;
-			map1[x][y] += z;
-		}
-		Dinic();
-	}
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int x, y, z;
+  while (cin >> n >> m) {
+    format(map1);
+    for (int i = 0; i < n; i++) {
+      cin >> x >> y >> z;
+      map1[x][y] += z;
+    }
+    Dinic();
+  }
+  return 0;
 }
