@@ -60,41 +60,42 @@ int digit[LEN]; // 用来存各个数位
 
 
 int dfs(int len, int limit, int state) { // len表示当前数位大小，limit表示最高标记位，state表示前一位是否为6
-	int ans = 0, num; // ans用来记录答案，num用来记录当前数位可以取到的最大的值
-	if (!len) { 
-		return 1;
-	}
-	if (!limit && dp[len][state] != -1) { // 若当前数位可以取到最大值9，并且dp数组有值就直接返回值
-		return dp[len][state];
-	}
-	num = limit ? digit[len] : 9;  // 这里的limit是0表示当前数位未取到最大值所以下一位一定可以取最大值，若当前数位以及取到最大值则下一个数位上能取到的最大值就是题目给的那个数位值
-	for (int i = 0; i <= num; i++) {
-		if (i== 4 || state && i == 2) {  // 若数位上是4或者62则跳过
-			continue;
-		}
-		ans += dfs(len - 1, limit && num == i, i == 6); // 缩小len，判断下一位的limit值，判断此时数位是否是6
-	}
-	if (!limit) {
-		dp[len][state] = ans; // 若当前数位能取到最大值则赋值dp
-	}
-	return ans;
+  int ans = 0, num; // ans用来记录答案，num用来记录当前数位可以取到的最大的值
+  if (!len) { 
+    return 1;
+  }
+  if (!limit && dp[len][state] != -1) { // 若当前数位可以取到最大值9，并且dp数组有值就直接返回值
+    return dp[len][state];
+  }
+  num = limit ? digit[len] : 9;  // 这里的limit是0表示当前数位未取到最大值所以下一位一定可以取最大值，若当前数位以及取到最大值则下一个数位上能取到的最大值就是题目给的那个数位值
+  for (int i = 0; i <= num; i++) {
+    if (i== 4 || state && i == 2) {  // 若数位上是4或者62则跳过
+      continue;
+    }
+    ans += dfs(len - 1, limit && num == i, i == 6); // 缩小len，判断下一位的limit值，判断此时数位是否是6
+  }
+  if (!limit) {
+    dp[len][state] = ans; // 若当前数位能取到最大值则赋值dp
+  }
+  return ans;
 }
 
 
 int solve(int num) {
-	int len = 0;
-	while (num) {
-		digit[++len] = num % 10; //给digit存值
-		num /= 10;
-	}
-	return dfs(len, 1, -1);
+  int len = 0;
+  while (num) {
+    digit[++len] = num % 10; //给digit存值
+    num /= 10;
+  }
+  return dfs(len, 1, -1);
 }
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	int n, m;
-	format(dp);
-	cin >> n >> m;
-	cout << solve(m) - solve(n - 1) << endl; 
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int n, m;
+  format(dp);
+  cin >> n >> m;
+  cout << solve(m) - solve(n - 1) << endl; 
+  return 0;
 }
