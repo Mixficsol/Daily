@@ -20,43 +20,44 @@
 ```cpp
 #include<iostream>
 #include<map>
+
 using namespace std;
-typedef struct tagIntPlus
-{
-    int num,i;
-}IntPlus;
+
+typedef struct tagIntPlus {
+  int num, i;
+} IntPlus;
 //自定义比较规则
 //注意operator是(),不是＜
-struct Cmp
-{
-    bool operator () (IntPlus const &a,IntPlus const &b)const
-    {
-        if(a.num!=b.num)
-            return a.num<b.num;
-        else return a.i<b.i;
+
+struct Cmp {
+  bool operator () (IntPlus const &a,IntPlus const &b)const {
+    if(a.num != b.num) {
+      return a.num < b.num;
+    } else {
+      return a.i<b.i;
     }
 };
-int main()
-{
-    srand((unsigned)time(NULL));
-    //注意此处一定要有Cmp，否则无法排序会报错
-    multimap<IntPlus,int,Cmp>mp;
-    int n;
-    cin>>n;
-    int a,b;
-    IntPlus intplus;
-    for(int i=0; i<n; i++)
-    {
-        a=rand()%4;
-        b=rand()%4;
-        intplus.num=a;
-        intplus.i=b;
-        mp.insert(pair<IntPlus,int>(intplus,i));
-    }
-    map<IntPlus,int>::iterator iter;
-    for(iter=mp.begin(); iter!=mp.end(); iter++)
-        cout<<iter->first.num<<" "<<iter->first.i<<" "<<iter->second<<endl;
-    return 0;
+
+int main() {
+  srand((unsigned)time(NULL));
+  //注意此处一定要有Cmp，否则无法排序会报错
+  multimap<IntPlus, int, Cmp> mp;
+  int n;
+  cin >> n;
+  int a,b;
+  IntPlus intplus;
+  for (int i = 0; i < n; i++) {
+    a = rand() % 4;
+    b = rand() % 4;
+    intplus.num = a;
+    intplus.i = b;
+    mp.insert(pair<IntPlus,int>(intplus, i));
+  }
+  map<IntPlus,int>::iterator iter;
+  for (iter = mp.begin(); iter != mp.end(); iter++) {
+    cout << iter->first.num << " " << iter->first.i << " " << iter->second << endl;
+  }
+  return 0;
 }
 
 
@@ -72,22 +73,21 @@ int main()
  #include <bits/stdc++.h>
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	map<string, int, greater<string> > m;
-	map<string, int, less<string> > m1;
-	map<string, int, greater<int> > m2;
-	map<string, int, less<int> > m3;
-	map<string, int> m4;
-	m["cs"] = 3;
-	m["ds"] = 2;
-	m["as"] = 1;
-	map<string,int>::iterator it = m.begin();
-	while (it != m.end()) {
-		cout << it->first <<  " " << it->second << endl;
-		it++;
-	}
-	
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  map<string, int, greater<string> > m;
+  map<string, int, less<string> > m1;
+  map<string, int, greater<int> > m2;
+  map<string, int, less<int> > m3;
+  map<string, int> m4;
+  m["cs"] = 3;
+  m["ds"] = 2;
+  m["as"] = 1;
+  map<string,int>::iterator it = m.begin();
+  while (it != m.end()) {
+    cout << it->first <<  " " << it->second << endl;
+    it++;
+  }	
 }
  ```
  
@@ -102,43 +102,43 @@ int main(int argc, char *argv[]) {
 using namespace std;
 
 typedef struct Mixficsol {
-	int num;
-	int i;
+  int num;
+  int i;
 } Mix;
 
 typedef pair<Mix,int> PAIR;
 
 struct Cmp {
-	bool operator () (Mix const &a, Mix const &b) const {
-		if (a.num != b.num) {
-			return a.num < b.num; // key.num按照正序排列
-		} else {
-			return a.i > b.i; // num相同按照key.i正序排列
-		}
-	}
+  bool operator () (Mix const &a, Mix const &b) const {
+    if (a.num != b.num) {
+      return a.num < b.num; // key.num按照正序排列
+    } else {
+      return a.i > b.i; // num相同按照key.i正序排列
+    }
+  }
 };
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	srand((unsigned)time(NULL));
-	multimap<Mix,int,Cmp> mp;
-	int n, a, b;
-	cin >> n;
-	Mix M;
-	for (int i = 0; i < n; i++) {
-		a = rand() % 4;
-		b = rand() % 4;
-		M.num = a;
-		M.i = b;
-		mp.insert(pair<Mix,int>(M,i));
-	}
-	map<Mix,int>::iterator iter;
-	cout << "排序后: " << endl;
-	for (iter = mp.begin(); iter != mp.end(); iter++) {
-		cout << iter->first.num << " | " << iter->first.i << " | " << iter->second << endl;
-	}
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  srand((unsigned)time(NULL));
+  multimap<Mix,int,Cmp> mp;
+  int n, a, b;
+  cin >> n;
+  Mix M;
+  for (int i = 0; i < n; i++) {
+    a = rand() % 4;
+    b = rand() % 4;
+    M.num = a;
+    M.i = b;
+    mp.insert(pair<Mix,int>(M,i));
+  }
+  map<Mix,int>::iterator iter;
+  cout << "排序后: " << endl;
+  for (iter = mp.begin(); iter != mp.end(); iter++) {
+    cout << iter->first.num << " | " << iter->first.i << " | " << iter->second << endl;
+  }
+  return 0;
 }
 
 
@@ -158,60 +158,61 @@ int main(int argc, char *argv[]) {
 using namespace std;
 
 typedef struct Mixficsol {
-	int num;
-	int i;
+  int num;
+  int i;
 } Mix;
 
 typedef pair<Mix,int> PAIR;
 
 struct Cmp {
-	bool operator () (Mix const &a, Mix const &b) const {
-		if (a.num != b.num) {
-			return a.num < b.num; // key.num按照正序排列
-		} else {
-			return a.i < b.i; // num相同按照key.i正序排列
-		}
-	}
+  bool operator () (Mix const &a, Mix const &b) const {
+    if (a.num != b.num) {
+      return a.num < b.num; // key.num按照正序排列
+    } else {
+      return a.i < b.i; // num相同按照key.i正序排列
+    }
+  }
 };
 
 bool cmp(PAIR const &a, PAIR const &b) {
-	if (a.first.num != b.first.num) {
-		return a.first.num < b.first.num;
-	} else {
-		if (a.first.i != b.first.i) {
-			return a.first.i < b.first.i;
-		} else {
-			return a.second > b.second; //key值相同按照value(i)倒序排列
-		}
-	}
+  if (a.first.num != b.first.num) {
+    return a.first.num < b.first.num;
+   } else {
+     if (a.first.i != b.first.i) {
+       return a.first.i < b.first.i;
+     } else {
+       return a.second > b.second; //key值相同按照value(i)倒序排列
+     }
+  }
 }
+
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	srand((unsigned)time(NULL));
-	multimap<Mix,int,Cmp> mp;
-	int n, a, b;
-	cin >> n;
-	Mix M;
-	for (int i = 0; i < n; i++) {
-		a = rand() % 4;
-		b = rand() % 4;
-		M.num = a;
-		M.i = b;
-		mp.insert(pair<Mix,int>(M,i));
-	}
-	map<Mix,int>::iterator iter;
-	cout << "排序前: " << endl;
-	for (iter = mp.begin(); iter != mp.end(); iter++) {
-		cout << iter->first.num << " | " << iter->first.i << " | " << iter->second << endl;
-	}
-	cout << "排序后: " << endl;
-	vector<PAIR> v(mp.begin(), mp.end());
-	sort(v.begin(), v.end(), cmp);
-	for (int i = 0; i < v.size(); i++) {
-		cout << v[i].first.num << " | " << v[i].first.i << " | " << v[i].second << endl;
-	}
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  srand((unsigned)time(NULL));
+  multimap<Mix,int,Cmp> mp;
+  int n, a, b;
+  cin >> n;
+  Mix M;
+  for (int i = 0; i < n; i++) {
+    a = rand() % 4;
+    b = rand() % 4;
+    M.num = a;
+    M.i = b;
+    mp.insert(pair<Mix,int>(M,i));
+  }
+  map<Mix,int>::iterator iter;
+  cout << "排序前: " << endl;
+  for (iter = mp.begin(); iter != mp.end(); iter++) {
+    cout << iter->first.num << " | " << iter->first.i << " | " << iter->second << endl;
+  }
+  cout << "排序后: " << endl;
+  vector<PAIR> v(mp.begin(), mp.end());
+  sort(v.begin(), v.end(), cmp);
+  for (int i = 0; i < v.size(); i++) {
+    cout << v[i].first.num << " | " << v[i].first.i << " | " << v[i].second << endl;
+  }
+  return 0;
 }
  ```
 <img width="969" alt="截屏2021-10-22 11 35 08" src="https://user-images.githubusercontent.com/73943232/138389364-81857b7f-d1d1-439c-b9f2-4f524c3221b6.png">
@@ -225,24 +226,23 @@ int main(int argc, char *argv[]) {
 
 using namespace std;
 
-
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	srand((unsigned)time(NULL));
-	int a;
-	set<int> s;
-	set<int, less<int> > s1;
-	set<int, greater<int> > s2;
-	for (int i = 0; i < 5; i++) {
-		a = rand() % 4;
-		s.insert(a);
-	}
-	set<int>::iterator iter;
-	for (iter = s.begin(); iter != s.end(); iter++) {
-		cout << *iter << ' ';
-	}
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  srand((unsigned)time(NULL));
+  int a;
+  set<int> s;
+  set<int, less<int> > s1;
+  set<int, greater<int> > s2;
+  for (int i = 0; i < 5; i++) {
+    a = rand() % 4;
+    s.insert(a);
+  }
+  set<int>::iterator iter;
+  for (iter = s.begin(); iter != s.end(); iter++) {
+    cout << *iter << ' ';
+  }
+  return 0;
 }
 ```
 
@@ -250,25 +250,25 @@ int main(int argc, char *argv[]) {
 #include <bits/stdc++.h>
 
 bool cmp(string const& a, string const& b) {
-	return a.size() > b.size();	  // 按照字符串的大小进行倒序排列即size大的排列在前面
+  return a.size() > b.size();	  // 按照字符串的大小进行倒序排列即size大的排列在前面
 }
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	set<string, greater<string> > s; // 按照string的字典序倒序排列
-	set<string, less<string> > s1; // 按照string的字典序顺序排列(默认是使用less)
-	set<string> s2; // 按照string的字典序顺序排列	
-	s.insert("abcd");
-	s.insert("dcba");
-	s.insert("123456");
-	vector<string> v(s.begin(),s.end()); // 由于set不是顺序容器所以得先存入vector进行排序
-	sort(v.begin(), v.end(), cmp);
-	for (int i = 0; i < v.size(); i++) {
-		cout << v[i] << endl;  // 最终的排序结果是字符串大的排列在最前面，字符串长度一样的按照字典序进行倒序排列
-	}
-	cout << s.size() << endl;
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  set<string, greater<string> > s; // 按照string的字典序倒序排列
+  set<string, less<string> > s1; // 按照string的字典序顺序排列(默认是使用less)
+  set<string> s2; // 按照string的字典序顺序排列	
+  s.insert("abcd");
+  s.insert("dcba");
+  s.insert("123456");
+  vector<string> v(s.begin(),s.end()); // 由于set不是顺序容器所以得先存入vector进行排序
+  sort(v.begin(), v.end(), cmp);
+  for (int i = 0; i < v.size(); i++) {
+    cout << v[i] << endl;  // 最终的排序结果是字符串大的排列在最前面，字符串长度一样的按照字典序进行倒序排列
+  }
+  cout << s.size() << endl;
+  return 0;
 }
 ```
 
@@ -291,56 +291,40 @@ int main(int argc, char *argv[]) {
 const int maxn = 1e6 + 10;
 using namespace std;
 
-inline int read() {
-	int s = 0, w = 1;
-	char ch = getchar();
-	while (ch < '0' || ch > '9') {
-		if (ch == '-') {
-			w = -1;
-		}
-		ch = getchar();
-	}
-	while (ch >= '0' && ch <= '9') {
-		s = s * 10 + ch - '0';
-		ch = getchar();
-	}
-	return s * w;
-}
-
 typedef struct student {
-	int grade;
-	string name;
+  int grade;
+  string name;
 }stu;
 
 struct cmp {
-	bool operator () (stu const &a, stu const &b) const {
-		if (a.grade != b.grade) {
-			return a.grade > b.grade; // 成绩按照倒序排列
-		} 
-		else if (a.name.size() != b.name.size()) { // 成绩一样按照名字长度排序,长度大的排在前面
-			return a.name.size() > b.name.size();
-		} else {
-			return a.name < b.name; // 长度一样按照字典序排序，字典序小的排在前面
-		} 
-	}
+  bool operator () (stu const &a, stu const &b) const {
+    if (a.grade != b.grade) {
+      return a.grade > b.grade; // 成绩按照倒序排列
+    } 
+    else if (a.name.size() != b.name.size()) { // 成绩一样按照名字长度排序,长度大的排在前面
+      return a.name.size() > b.name.size();
+    } else {
+      return a.name < b.name; // 长度一样按照字典序排序，字典序小的排在前面
+    } 
+  }
 };
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	int n;
-	stu Stu;
-	cin >> n;
-	set<stu,cmp> s;
-	for (int i = 0; i < n; i++) {
-		cin >> Stu.name >> Stu.grade;
-		s.insert(Stu);
-	}
-	set<stu,cmp>::iterator iter;
-	for (iter = s.begin(); iter != s.end(); iter++) {
-		cout << iter->name << ' ' << iter->grade << endl;
-	}
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int n;
+  stu Stu;
+  cin >> n;
+  set<stu,cmp> s;
+  for (int i = 0; i < n; i++) {
+    cin >> Stu.name >> Stu.grade;
+    s.insert(Stu);
+  }
+  set<stu,cmp>::iterator iter;
+  for (iter = s.begin(); iter != s.end(); iter++) {
+    cout << iter->name << ' ' << iter->grade << endl;
+  }
+  return 0;
 }
  ```
 <img width="963" alt="截屏2021-10-22 11 37 26" src="https://user-images.githubusercontent.com/73943232/138389589-4ccb162b-a0de-4e90-aca3-8124720133ff.png">
