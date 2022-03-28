@@ -1,6 +1,6 @@
 日期 2022 / 03 / 04
 
-##题目
+## 题目
 
 >Description
 >
@@ -78,36 +78,36 @@ int father[N]; // 存取每个结点指向的父节点
 int value[N]; // 存取每个结点的值
 
 void dfs(int root) {
-	dp[root][0] = 0;  // 不选根节点的情况
-	dp[root][1] = value[root]; // 选择根节点的情况
-	for (int i = 0; i < v[root].size(); i++) {
-		int son = v[root][i];  // 提取出子节点
-		dfs(son);  // 对子节点dfs
-		dp[root][0] += max(dp[son][0], dp[son][1]); //根节点不选（子节点选或不选）
-		dp[root][1] += dp[son][0]; //选择根节点且子节点不选
-	}
+  dp[root][0] = 0;  // 不选根节点的情况
+  dp[root][1] = value[root]; // 选择根节点的情况
+  for (int i = 0; i < v[root].size(); i++) {
+    int son = v[root][i];  // 提取出子节点
+    dfs(son);  // 对子节点dfs
+    dp[root][0] += max(dp[son][0], dp[son][1]); //根节点不选（子节点选或不选）
+    dp[root][1] += dp[son][0]; //选择根节点且子节点不选
+  }
 }
 
 int main(int argc, char *argv[]) {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	int n, x, y, z;
-	while (cin >> n) {
-		for (int i = 1; i <= n; i++) {
-			cin >> value[i]; // 存入各个节点的值
-			format(father); // 初始化父节点使其为-1
-			v[i].clear();  // 初始化容器
-		}
-		while (cin >> x >> y && x && y) {
-			father[x] = y;  // 将x的父节点定义为y
-			v[y].push_back(x); // 将x存进y节点容器中
-		}
-		z = 1;
-		while (father[z] != -1) {
-			z = father[z];  // 找到根节点
-		}
-		dfs(z);
-		cout << max(dp[z][0], dp[z][1]) << endl;  // 从根节点判断答案
-	}
-	return 0;
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int n, x, y, z;
+  while (cin >> n) {
+    for (int i = 1; i <= n; i++) {
+      cin >> value[i]; // 存入各个节点的值
+      format(father); // 初始化父节点使其为-1
+      v[i].clear();  // 初始化容器
+    }
+    while (cin >> x >> y && x && y) {
+      father[x] = y;  // 将x的父节点定义为y
+      v[y].push_back(x); // 将x存进y节点容器中
+    }
+    z = 1;
+    while (father[z] != -1) {
+      z = father[z];   // 找到根节点
+    }
+    dfs(z);
+    cout << max(dp[z][0], dp[z][1]) << endl;  // 从根节点判断答案
+  }
+  return 0;
 } 
