@@ -40,7 +40,6 @@
 
 using namespace std;
 
-
 typedef struct Tree {
   Tree *left;
   Tree *right;
@@ -48,7 +47,6 @@ typedef struct Tree {
 }Tree;
 
 Tree *root;
-int cnt;
 
 Tree* Create(int x) {  // 建树
   Tree* tree = (Tree*)malloc(sizeof(Tree));
