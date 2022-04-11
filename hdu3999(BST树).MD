@@ -58,7 +58,7 @@ Tree* Create(int x) {  // 建树
 
 Tree* Insert(Tree *t, int x) {   // 插入
   if (t == NULL) {
-      t = Create(x);
+    t = Create(x);
   } else {
     if (t->value > x) {
       t->left = Insert(t->left, x);
@@ -72,7 +72,7 @@ Tree* Insert(Tree *t, int x) {   // 插入
 void Print(Tree *t) {  // 先序遍历
   if (t != NULL) {
     if (t == root) {
-        cout << t->value;
+      cout << t->value;
     } else {
       cout << " " << t->value;
     }
