@@ -47,15 +47,16 @@
 >
 >492737
 # 解题思路
->这个一个Treap树的模板题，包括了插入删除，查询等操作.题解写在注释里面了
+>这个一个Treap树的模板题，包括了插入删除，查询等操作.Treap树是一种平衡二叉搜索树，它与AVL,红黑树，Spaly树一样都是平衡二叉搜索树，Treap里面有6个属性，在常规的键值，左儿子，右儿子属性的基础上，Treap树还有一个val的优先级参数，这个参数很重要，我们只要BST树的特征是：1、树中每个节点都有一个权值2、若左子树非空，则左子树上所有节点的权值均小于根节点的权值。3、若右子树非空，则右子树上所有节点的权值均大于根节点的权值。4、左右子树也分别为二叉查找树。所以如果数据插入顺序不恰当的话这颗树很可能退化成一个链表，所以val属性确保了树的基本平衡，还有一个属性就是cnt表示当前键值的重复个数，以及size用来表示所有节点的个数。
+
 
 # 代码演示
 ```cpp
 #include <iostream>
 
 #define INF 0x3f3f3f
-#define L tree[i].left
-#define R tree[i].right
+#define L tree[i].left // 代表根节点为i的左二子
+#define R tree[i].right // 代表根节点为i的右儿子
 
 using namespace std;
 const int N = 1e5 + 5;
@@ -99,53 +100,53 @@ void zag(int &i) {    //左旋，原理与上面相似
   pushup(i);
 }
 
-void insert(int &i, int key) {	
+void insert(int &i, int key) {	 // 插入数据操作
   if (!i) { //如果没有根节点，则新建根节点
-	i = getNode(key);	
+    i = getNode(key);	
   }	
   else if (tree[i].key == key) { //如果键值大小和根节点一样就加到cnt
-	tree[i].cnt++;	
+    tree[i].cnt++;	
   }
   else if (tree[i].key > key) {	//如果键值小于根节点则插入左孩子	
-	insert(L, key);
-	if (tree[L].val > tree[i].val) { // 如果当前节点的优先级大于根节点则右旋
-	  zig(i);		
-	}
+    insert(L, key);
+    if (tree[L].val > tree[i].val) { // 如果当前节点的优先级大于根节点则右旋
+      zig(i);		
+    }
   } else {		 //如果键值大于根节点则插入右孩子	
     insert(R, key);
-	if (tree[R].val > tree[i].val) { // 如果当前节点的优先级小于根节点则左旋
-	  zag(i);
-	}
+    if (tree[R].val > tree[i].val) { // 如果当前节点的优先级小于根节点则左旋
+      zag(i);
+    }
   }
   pushup(i);		
 }
 
-void remove(int &i, int key) {		
-  if (!i) {
+void remove(int &i, int key) {	//删除数据操作	
+  if (!i) { // 如果没有节点返回空;
     return;	
   }			
-  if (tree[i].key == key) {
+  if (tree[i].key == key) { // 如果找到了这个要删除的节点
     if (tree[i].cnt > 1) { //如果删除的点有重复个值则在cnt中减去
-	  tree[i].cnt--;
-	}	
-	else if (L || R) {			
-	  if (!R || tree[L].val > tree[R].val) {	
-	    zig(i);
-		remove(R, key);
-	  } else {
-		zag(i);
-		remove(L,key);
-	  }
-	} else {
-	  i = 0;
-	}		
+      tree[i].cnt--;
+    }	
+    else if (L || R) { // 如果要删除的节点有左儿子或者右儿子
+      if (!R || tree[L].val > tree[R].val) {	//1.如果有左右儿子的话并且左儿子的优先级大于右儿子则右旋 2.如果该节点没有右儿子则右旋
+	zig(i); //先右旋后移除
+	remove(R, key);
+      } else {
+	zag(i); //否则就左旋后移除
+	remove(L,key);
+      }
+    } else {
+     i = 0;
+    }		
   }
-  else if (tree[i].key > key) {
-    remove(L, key);
+  else if (tree[i].key > key) { //如果要删的节点小于目前的节点
+    remove(L, key); // 递归左子树
   } else {
-	remove(R, key);	
+    remove(R, key);	 // 递归右子树
   }	
-  if (i) {
+  if (i) { // 如果操作成功则重新统计节点个数
     pushup(i);
   }	
 }
@@ -154,26 +155,26 @@ int kth(int &i, int key) { // 查询当前键值key的排名
   if (!i) {
     return 0;
   }		
-  if (tree[i].key == key) {
-	return tree[L].size + 1;		
+  if (tree[i].key == key) { // 如果节点就是当前的节点
+    return tree[L].size + 1;		
   }
-  if (tree[i].key > key) {
-	return kth(L, key);		
+  if (tree[i].key > key) {  // 如果节点小于当前的节点
+    return kth(L, key);		
   }
   return tree[L].size + tree[i].cnt + kth(R, key);		
 }
 
-int find(int &i, int rank) {		
+int find(int &i, int rank) {		// 查询排名为rank的键值
   if (!i) {
     return INF;			
   }
-  if (tree[L].size >= rank) {
-	return find(L, rank);	
+  if (tree[L].size >= rank) { // 如果rank小于当前节点的rank，则递归左子树
+    return find(L, rank);	
   }
-  if (tree[L].size + tree[i].cnt >= rank) {
-	return tree[i].key;	
+  if (tree[L].size + tree[i].cnt >= rank) { 
+    return tree[i].key;	
   }
-  return find(R, rank - tree[L].size - tree[i].cnt);	
+  return find(R, rank - tree[L].size - tree[i].cnt);	 // 如果当前节点的rank小于目标rank则递归右子树
 }
 
 int getPrev(int &i, int key) { // 寻找key的前驱
@@ -181,7 +182,7 @@ int getPrev(int &i, int key) { // 寻找key的前驱
     return -INF;			
   }
   if (key <= tree[i].key) { // 如果key小于当前节点的key则递归到左子树
-	return getPrev(L, key);	
+    return getPrev(L, key);	
   }
   return max(tree[i].key, getPrev(R, key));	
 }
@@ -201,25 +202,39 @@ int main() {
   cin >> t;
   while (t--) {
     int k, x;
-	cin >> k >> x;
-	if (k == 1) {
-	  insert(root, x);		
-	}
-	else if (k == 2) {
-	  remove(root, x);		
-	}
-	else if(k == 3) {
-	  cout << kth(root, x) << endl;
-	}	
-	else if (k == 4) {
-	  cout << find(root, x) << endl;
-	}
-	else if (k == 5) {
-	  cout << getPrev(root, x) << endl;
-	} else {
-	  cout << getNext(root, x) << endl;	
-	}
+    cin >> k >> x;
+    if (k == 1) {
+      insert(root, x);		
+    }
+    else if (k == 2) {
+     remove(root, x);		
+    }
+    else if(k == 3) {
+     cout << kth(root, x) << endl;
+    }	
+    else if (k == 4) {
+     cout << find(root, x) << endl;
+    }
+    else if (k == 5) {
+     cout << getPrev(root, x) << endl;
+    } else {
+     cout << getNext(root, x) << endl;	
+    }
   }
   return 0;
 }
+
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
