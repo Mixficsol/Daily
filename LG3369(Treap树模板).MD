@@ -207,18 +207,18 @@ int main() {
       insert(root, x);		
     }
     else if (k == 2) {
-     remove(root, x);		
+      remove(root, x);		
     }
     else if(k == 3) {
-     cout << kth(root, x) << endl;
+      cout << kth(root, x) << endl;
     }	
     else if (k == 4) {
-     cout << find(root, x) << endl;
+      cout << find(root, x) << endl;
     }
     else if (k == 5) {
-     cout << getPrev(root, x) << endl;
+      cout << getPrev(root, x) << endl;
     } else {
-     cout << getNext(root, x) << endl;	
+      cout << getNext(root, x) << endl;	
     }
   }
   return 0;
